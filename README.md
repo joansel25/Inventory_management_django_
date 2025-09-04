@@ -1,1 +1,1 @@
-# Inventory-management-python
+# Inventory-management-django
