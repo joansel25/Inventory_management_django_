@@ -23,5 +23,6 @@ router.register(r'movimientos', MovimientoViewset, basename='movimiento')
 
 urlpatterns =[
     path('',include(router.urls))
+    
 ]
 #
