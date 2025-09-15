@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from .models import (
-    Categorias,Productos,Proveedores,
-    Clientes,Empleados,FacturaVentas,
-    DetalleVentas,Movimientos
+    Categoria, Producto, Proveedor,
+    Cliente, Empleado, FacturaVenta,
+    DetalleVenta, Movimiento
 )
 
 # ModelSerializer: es una clase de DRF que automatiza la creación de serializadores basados en modelos de Django.
@@ -11,41 +11,41 @@ from .models import (
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Categorias
+        model = Categoria
         fields = '__all__'
 
 
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Productos
+        model = Producto
         fields = '__all__'
 
 class ProveedorSerializer(serializers.ModelSerializer):
     class Meta:
-        model= Proveedores
+        model= Proveedor
         fields= '__all__'
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Clientes
+        model = Cliente
         fields = '__all__'
 
 class EmpleadoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Empleados
+        model = Empleado
         fields = '__all__'
 
 class FacturaVentaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FacturaVentas
+        model = FacturaVenta
         fields = '__all__'
 
 class DetalleVentaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DetalleVentas
+        model = DetalleVenta
         fields = '__all__'
 
 class MovimientoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Movimientos
+        model = Movimiento
         fields = '__all__'

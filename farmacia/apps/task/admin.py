@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Categorias, Proveedores, Productos, Clientes, Empleados, FacturaVentas, DetalleVentas, Movimientos
+from .models import Categoria, Proveedor, Producto, Cliente, Empleado, FacturaVenta, DetalleVenta, Movimiento
 
-admin.site.register(Categorias)
-admin.site.register(Proveedores)
-admin.site.register(Productos)
-admin.site.register(Clientes)
-admin.site.register(Empleados)
-admin.site.register(FacturaVentas)
-admin.site.register(DetalleVentas)
-admin.site.register(Movimientos)
+admin.site.register(Categoria)
+admin.site.register(Proveedor)
+admin.site.register(Producto)
+admin.site.register(Cliente)
+admin.site.register(Empleado)
+admin.site.register(FacturaVenta)
+admin.site.register(DetalleVenta)
+admin.site.register(Movimiento)

@@ -2,24 +2,24 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import (
-    Categorias, Proveedores, Productos,
-    Clientes, Empleados, FacturaVentas,
-    DetalleVentas, Movimientos
+    Categoria, Proveedor, Producto,
+    Cliente, Empleado, FacturaVenta,
+    DetalleVenta, Movimiento
 )
 
 class CategoriaTests(APITestCase):
     def setUp(self):
         self.categoria_data = {'nombre': 'Medicamentos'}
-        self.categoria = Categorias.objects.create(nombre='Vitaminas')
+        self.categoria = Categoria.objects.create(nombre='Vitaminas')
 
     def test_crear_categoria(self):
         url = reverse('categoria-list')
         response = self.client.post(url, self.categoria_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Categorias.objects.count(), 2)
+        self.assertEqual(Categoria.objects.count(), 2)
 
         # Usar latest('id') para obtener la última categoría creada
-        ultima_categoria = Categorias.objects.latest('id')
+        ultima_categoria = Categoria.objects.latest('id')
         self.assertEqual(ultima_categoria.nombre, 'Medicamentos')
 
     def test_listar_categorias(self):
@@ -46,21 +46,21 @@ class CategoriaTests(APITestCase):
         url = reverse('categoria-detail', args=[self.categoria.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Categorias.objects.count(), 0)
+        self.assertEqual(Categoria.objects.count(), 0)
 
 class ProveedorTests(APITestCase):
     def setUp(self):
         self.proveedor_data = {'nombre': 'Proveedor Ejemplo', 'contacto': 'contacto@ejemplo.com'}
-        self.proveedor = Proveedores.objects.create(nombre='Proveedor Inicial', contacto='inicial@ejemplo.com')
+        self.proveedor = Proveedor.objects.create(nombre='Proveedor Inicial', contacto='inicial@ejemplo.com')
 
     def test_crear_proveedor(self):
         url = reverse('proveedor-list')
         response = self.client.post(url, self.proveedor_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Proveedores.objects.count(), 2)
+        self.assertEqual(Proveedor.objects.count(), 2)
 
         # Usar latest('id') para obtener el último proveedor creado
-        ultimo_proveedor = Proveedores.objects.latest('id')
+        ultimo_proveedor = Proveedor.objects.latest('id')
         self.assertEqual(ultimo_proveedor.nombre, 'Proveedor Ejemplo')
 
     def test_listar_proveedores(self):
@@ -87,12 +87,12 @@ class ProveedorTests(APITestCase):
         url = reverse('proveedor-detail', args=[self.proveedor.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Proveedores.objects.count(), 0)
+        self.assertEqual(Proveedor.objects.count(), 0)
 
 class ProductoTests(APITestCase):
     def setUp(self):
-        self.categoria = Categorias.objects.create(nombre='Medicamentos')
-        self.proveedor = Proveedores.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
+        self.categoria = Categoria.objects.create(nombre='Medicamentos')
+        self.proveedor = Proveedor.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
         self.producto_data = {
             'nombre': 'Paracetamol',
             'precio': 10.50,
@@ -100,7 +100,7 @@ class ProductoTests(APITestCase):
             'id_categoria': self.categoria.id,
             'id_proveedor': self.proveedor.id
         }
-        self.producto = Productos.objects.create(
+        self.producto = Producto.objects.create(
             nombre='Ibuprofeno',
             precio=15.75,
             stock=50,
@@ -112,10 +112,10 @@ class ProductoTests(APITestCase):
         url = reverse('producto-list')
         response = self.client.post(url, self.producto_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Productos.objects.count(), 2)
+        self.assertEqual(Producto.objects.count(), 2)
 
         # Usar latest('id') para obtener el último producto creado
-        ultimo_producto = Productos.objects.latest('id')
+        ultimo_producto = Producto.objects.latest('id')
         self.assertEqual(ultimo_producto.nombre, 'Paracetamol')
 
     def test_listar_producto(self):
@@ -148,21 +148,21 @@ class ProductoTests(APITestCase):
         url = reverse('producto-detail', args=[self.producto.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Productos.objects.count(), 0)
+        self.assertEqual(Producto.objects.count(), 0)
 
 class ClienteTests(APITestCase):
     def setUp(self):
         self.cliente_data = {'nombre': 'Juan Pérez', 'correo': 'juan@example.com', 'telefono': '3123456789'}
-        self.cliente = Clientes.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
+        self.cliente = Cliente.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
 
     def test_crear_cliente(self):
         url = reverse('cliente-list')
         response = self.client.post(url, self.cliente_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Clientes.objects.count(), 2)
+        self.assertEqual(Cliente.objects.count(), 2)
 
         # Usar latest('id') para obtener el último cliente creado
-        ultimo_cliente = Clientes.objects.latest('id')
+        ultimo_cliente = Cliente.objects.latest('id')
         self.assertEqual(ultimo_cliente.nombre, 'Juan Pérez')
 
     def test_listar_clientes(self):
@@ -189,21 +189,21 @@ class ClienteTests(APITestCase):
         url = reverse('cliente-detail', args=[self.cliente.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Clientes.objects.count(), 0)
+        self.assertEqual(Cliente.objects.count(), 0)
 
 class EmpleadoTests(APITestCase):
     def setUp(self):
         self.empleado_data = {'nombre': 'Ana Gómez', 'telefono': '3134567890', 'cargo': 'Vendedora'}
-        self.empleado = Empleados.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
+        self.empleado = Empleado.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
 
     def test_crear_empleado(self):
         url = reverse('empleado-list')
         response = self.client.post(url, self.empleado_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Empleados.objects.count(), 2)
+        self.assertEqual(Empleado.objects.count(), 2)
 
         # Usar latest('id') para obtener el último empleado creado
-        ultimo_empleado = Empleados.objects.latest('id')
+        ultimo_empleado = Empleado.objects.latest('id')
         self.assertEqual(ultimo_empleado.nombre, 'Ana Gómez')
 
     def test_listar_empleados(self):
@@ -230,17 +230,17 @@ class EmpleadoTests(APITestCase):
         url = reverse('empleado-detail', args=[self.empleado.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Empleados.objects.count(), 0)
+        self.assertEqual(Empleado.objects.count(), 0)
 
 class FacturaVentaTests(APITestCase):
     def setUp(self):
-        self.cliente = Clientes.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
-        self.empleado = Empleados.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
+        self.cliente = Cliente.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
+        self.empleado = Empleado.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
         self.factura_data = {
             'id_cliente': self.cliente.id,
             'id_empleado': self.empleado.id
         }
-        self.factura = FacturaVentas.objects.create(
+        self.factura = FacturaVenta.objects.create(
             id_cliente=self.cliente,
             id_empleado=self.empleado
         )
@@ -249,7 +249,7 @@ class FacturaVentaTests(APITestCase):
         url = reverse('facturaventa-list')
         response = self.client.post(url, self.factura_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(FacturaVentas.objects.count(), 2)
+        self.assertEqual(FacturaVenta.objects.count(), 2)
 
     def test_listar_facturas(self):
         url = reverse('facturaventa-list')
@@ -266,22 +266,22 @@ class FacturaVentaTests(APITestCase):
         url = reverse('facturaventa-detail', args=[self.factura.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(FacturaVentas.objects.count(), 0)
+        self.assertEqual(FacturaVenta.objects.count(), 0)
 
 class DetalleVentaTests(APITestCase):
     def setUp(self):
-        self.categoria = Categorias.objects.create(nombre='Medicamentos')
-        self.proveedor = Proveedores.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
-        self.producto = Productos.objects.create(
+        self.categoria = Categoria.objects.create(nombre='Medicamentos')
+        self.proveedor = Proveedor.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
+        self.producto = Producto.objects.create(
             nombre='Paracetamol',
             precio=10.50,
             stock=100,
             id_categoria=self.categoria,
             id_proveedor=self.proveedor
         )
-        self.cliente = Clientes.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
-        self.empleado = Empleados.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
-        self.factura = FacturaVentas.objects.create(
+        self.cliente = Cliente.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
+        self.empleado = Empleado.objects.create(nombre='Luis Martínez', telefono='3145678901', cargo='Gerente')
+        self.factura = FacturaVenta.objects.create(
             id_cliente=self.cliente,
             id_empleado=self.empleado
         )
@@ -291,7 +291,7 @@ class DetalleVentaTests(APITestCase):
             'id_factura': self.factura.id,
             'id_producto': self.producto.id
         }
-        self.detalle = DetalleVentas.objects.create(
+        self.detalle = DetalleVenta.objects.create(
             cantidad=1,
             precio_unitario=10.50,
             id_factura=self.factura,
@@ -302,10 +302,10 @@ class DetalleVentaTests(APITestCase):
         url = reverse('detalleventa-list')
         response = self.client.post(url, self.detalle_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(DetalleVentas.objects.count(), 2)
+        self.assertEqual(DetalleVenta.objects.count(), 2)
 
         # Usar latest('id') para obtener el último detalle creado
-        ultimo_detalle = DetalleVentas.objects.latest('id')
+        ultimo_detalle = DetalleVenta.objects.latest('id')
         self.assertEqual(ultimo_detalle.cantidad, 2)
 
     def test_listar_detalles(self):
@@ -323,27 +323,27 @@ class DetalleVentaTests(APITestCase):
         url = reverse('detalleventa-detail', args=[self.detalle.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(DetalleVentas.objects.count(), 0)
+        self.assertEqual(DetalleVenta.objects.count(), 0)
 
 class MovimientoTests(APITestCase):
     def setUp(self):
-        self.categoria = Categorias.objects.create(nombre='Medicamentos')
-        self.proveedor = Proveedores.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
-        self.producto = Productos.objects.create(
+        self.categoria = Categoria.objects.create(nombre='Medicamentos')
+        self.proveedor = Proveedor.objects.create(nombre='Proveedor Ejemplo', contacto='contacto@ejemplo.com')
+        self.producto = Producto.objects.create(
             nombre='Paracetamol',
             precio=10.50,
             stock=100,
             id_categoria=self.categoria,
             id_proveedor=self.proveedor
         )
-        self.cliente = Clientes.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
+        self.cliente = Cliente.objects.create(nombre='Carlos López', correo='carlos@example.com', telefono='3101234567')
         self.movimiento_data = {
             'tipo': 'entrada',
             'cantidad': 10,
             'id_producto': self.producto.id,
             'id_cliente': self.cliente.id
         }
-        self.movimiento = Movimientos.objects.create(
+        self.movimiento = Movimiento.objects.create(
             tipo='salida',
             cantidad=5,
             id_producto=self.producto,
@@ -354,10 +354,10 @@ class MovimientoTests(APITestCase):
         url = reverse('movimiento-list')
         response = self.client.post(url, self.movimiento_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Movimientos.objects.count(), 2)
+        self.assertEqual(Movimiento.objects.count(), 2)
 
         # Usar latest('id') para obtener el último movimiento creado
-        ultimo_movimiento = Movimientos.objects.latest('id')
+        ultimo_movimiento = Movimiento.objects.latest('id')
         self.assertEqual(ultimo_movimiento.tipo, 'entrada')
 
     def test_listar_movimientos(self):
@@ -375,4 +375,4 @@ class MovimientoTests(APITestCase):
         url = reverse('movimiento-detail', args=[self.movimiento.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Movimientos.objects.count(), 0)
+        self.assertEqual(Movimiento.objects.count(), 0)
