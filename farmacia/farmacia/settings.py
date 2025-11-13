@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nhl#v+oclsu8o^7rl7i4dg7gr@$rt46s1yib*%s(_yhv0^6eu-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".vercel.app",".now.sh", '127.0.0.1']
 
 
 # Application definition
@@ -43,10 +43,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
+    'whitenoise.runserver_nostatic', 
+    'corsheaders', 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'corsheaders.middleware.CorsMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -101,7 +105,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'farmacia',      
+        'NAME': 'farmacias',      
 
         'USER': 'postgres',    
 
@@ -164,3 +168,10 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # 👈 Tu frontend (Vite)
+    "http://127.0.0.1:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True
