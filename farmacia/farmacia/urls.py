@@ -28,8 +28,8 @@ urlpatterns = [
 
     # Rutas de las aplicaciones
     path('farmacia/', include('apps.task.urls')),
-    path('api/auth/', include('apps.usuario.urls')),  # 👈 solo una vez
-
+    path('api/auth/', include('apps.usuario.urls')), 
+    
     # JWT tokens (inicio y refresco)
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

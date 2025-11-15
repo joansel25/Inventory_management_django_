@@ -13,14 +13,13 @@ class UsuarioSerializer(serializers.ModelSerializer):
 # 🔹 Serializer personalizado para generar el token JWT
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    Serializer personalizado que agrega información adicional del usuario
-    dentro del token JWT y en la respuesta del login.
+    Serializer personalizado para añadir datos extras al token(JWT)
     """
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # 🔸 Campos personalizados que aparecerán dentro del token
+        # 🔸 Campos que se incluiran en el token
         token['username'] = user.username
         token['email'] = user.email
         token['telefono'] = user.telefono
@@ -31,7 +30,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        # 🔹 Estructura organizada para el frontend
+        # 🔹 Estructura del  frontend
         data['user'] = {
             'username': self.user.username,
             'email': self.user.email,
