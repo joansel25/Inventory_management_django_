@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nhl#v+oclsu8o^7rl7i4dg7gr@$rt46s1yib*%s(_yhv0^6eu-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".vercel.app",".now.sh", '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = [".vercel.app", ".now.sh", '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -39,18 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.task',
-    'apps.usuario', 
+    'apps.usuario',
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
-    'whitenoise.runserver_nostatic', 
-    'corsheaders', 
+    'whitenoise.runserver_nostatic',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'corsheaders.middleware.CorsMiddleware', 
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -107,18 +107,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'farmacia',      
+        'NAME': 'farmacia',
 
-        'USER': 'postgres',    
+        'USER': 'postgres',
 
-        'PASSWORD': 'postgres',  
+        'PASSWORD': 'postgres',
 
-        'HOST': 'localhost',  
-	
-        'PORT': '5432', 
+        'HOST': 'localhost',
+
+        'PORT': '5432',
     }
 }
-
 
 
 # Password validation
@@ -162,10 +161,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60), #token de acceso
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=3), #token de refresh 
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # token de acceso
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),  # token de refresh
     "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,# por defecto usa SECRET_KEY
+    "SIGNING_KEY": SECRET_KEY,  # por defecto usa SECRET_KEY
     "AUTH_HEADER_TYPES": ("Bearer",),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
@@ -178,29 +177,28 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-
-LOG_DIR = BASE_DIR / 'logs'
-LOG_DIR.mkdir(exist_ok=True)  
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-        },
         'console': {
-            'level': 'INFO',
             'class': 'logging.StreamHandler',
         },
     },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',  # Cambiado a INFO para menos ruido
-            'propagate': True,
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'farmacia': {  # Logger para tu aplicación principal
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
 }
