@@ -1,19 +1,28 @@
-#Aqui Definimos  las rutas relacionadas con los modelos y vistas de la aplicación task.
-#Mantenemos  el código limpio y modular, separando las URLs por aplicación.
-
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import *
+from rest_framework import routers
+from .views import (
+    CategoriaViewSet,
+    ProductoViewSet,
+    ProveedorViewSet,
+    ClienteViewSet,
+    EmpleadoViewSet,
+    FacturaVentaViewSet,
+    DetalleVentaViewSet,
+    MovimientoViewSet
+)
 
-router = DefaultRouter()
+# Crear el router
+router = routers.DefaultRouter()
 router.register(r'categorias', CategoriaViewSet, basename='categoria')
-router.register(r'productos', ProductoViewset, basename='producto')
-router.register(r'proveedores', ProveedorViewset, basename='proveedor')
-router.register(r'clientes', ClienteViewset, basename='cliente')
-router.register(r'empleados', EmpleadoViewset, basename='empleado')
-router.register(r'facturasventa', FacturaVentaViewset, basename='facturaventa')
-router.register(r'detallesventa', DetalleVentaViewset, basename='detalleventa')
-router.register(r'movimientos', MovimientoViewset, basename='movimiento')
+router.register(r'productos', ProductoViewSet, basename='producto')
+router.register(r'proveedores', ProveedorViewSet, basename='proveedor')
+router.register(r'clientes', ClienteViewSet, basename='cliente')
+router.register(r'empleados', EmpleadoViewSet, basename='empleado')
+router.register(r'facturas', FacturaVentaViewSet, basename='factura')
+router.register(r'detalles', DetalleVentaViewSet, basename='detalle')
+router.register(r'movimientos', MovimientoViewSet, basename='movimiento')
 
-urlpatterns = router.urls
-#
+# Incluir todas las rutas del router bajo /api/
+urlpatterns = [
+    path('api/', include(router.urls)),  # Las rutas quedarán como /farmacia/api/<modelo>/
+]

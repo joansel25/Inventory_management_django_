@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
+       "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -60,11 +61,12 @@ ROOT_URLCONF = 'farmacia.urls'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     )
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',  # ✅ Todas las vistas requieren autenticación por defecto
-    
 }
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -99,19 +101,12 @@ AUTH_USER_MODEL = 'usuario.Usuario'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'farmacia',       # Replace with your PostgreSQL database name,
-
-        'USER': 'postgres',     # Replace with your PostgreSQL username,
-
-        'PASSWORD': 'postgres',  # Replace with your PostgreSQL password,
-
-        'HOST': 'localhost',  # Or the IP address/hostname of your PostgreSQL server,
-	
-        'PORT': '5432',  # Default PostgreSQL port, or specify if different,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
 
 
 
